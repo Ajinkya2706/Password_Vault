@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SecureVault - Password Manager
+
+A secure password management application with client-side encryption, built for privacy-conscious users who need a simple way to store and manage credentials.
+
+## What It Does
+
+SecureVault helps you generate strong passwords and store them safely. Everything is encrypted on your device before being sent to the server, which means even the database only sees encrypted data.
+
+## Key Features
+
+- **Client-Side Encryption**: Passwords are encrypted in your browser using AES-256 before storage
+- **Password Generator**: Create secure passwords with customizable options
+- **Quick Copy**: Copy passwords with auto-clear after 15 seconds
+- **Search & Filter**: Find credentials quickly with live search
+- **Clean Interface**: Minimal black and white design focused on usability
+
+## Technical Stack
+
+- **Frontend**: Next.js 15 (App Router), TypeScript, Tailwind CSS
+- **Backend**: Next.js API Routes
+- **Database**: MongoDB
+- **Encryption**: CryptoJS for AES-256 encryption
+- **Authentication**: JWT with httpOnly cookies
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- MongoDB database (local or Atlas)
+
+### Installation
+
+```bash
+npm install
+```
+
+### Configuration
+
+Create `.env.local`:
+
+```
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key_minimum_32_characters
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+### Run Locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment (Vercel)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Push code to GitHub
+2. Import project in Vercel
+3. Add environment variables in Vercel dashboard
+4. Deploy
 
-## Learn More
+## Security Notes
 
-To learn more about Next.js, take a look at the following resources:
+- Master key never leaves your device
+- Server only stores encrypted password blobs
+- Encryption key derived from email + password
+- JWT tokens in httpOnly cookies
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## File Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+password-vault/
+├── src/
+│   ├── app/
+│   │   ├── api/
+│   │   │   ├── auth/
+│   │   │   │   ├── login/
+│   │   │   │   │   └── route.ts
+│   │   │   │   ├── register/
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── logout/
+│   │   │   │       └── route.ts
+│   │   │   └── vault/
+│   │   │       ├── route.ts
+│   │   │       └── [id]/
+│   │   │           └── route.ts
+│   │   ├── (auth)/
+│   │   │   ├── login/
+│   │   │   │   └── page.tsx
+│   │   │   └── register/
+│   │   │       └── page.tsx
+│   │   ├── dashboard/
+│   │   │   └── page.tsx
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   └── globals.css
+│   ├── components/
+│   │   ├── PasswordGenerator.tsx
+│   │   ├── VaultList.tsx
+│   │   ├── VaultItemForm.tsx
+│   │   └── Navbar.tsx
+│   ├── lib/
+│   │   ├── mongodb.ts
+│   │   ├── encryption.ts
+│   │   ├── auth.ts
+│   │   └── clipboard.ts
+│   ├── models/
+│   │   ├── User.ts
+│   │   └── VaultItem.ts
+│   ├── types/
+│   │   └── index.ts
+│   └── middleware.ts
+├── .env.local
+├── .gitignore
+├── next.config.js
+├── package.json
+├── tsconfig.json
+└── tailwind.config.ts
+```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
